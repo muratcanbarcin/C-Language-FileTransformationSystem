@@ -1,0 +1,115 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- Define complex types -->
+  <xs:complexType name="studentInfoType">
+    <xs:sequence>
+      <xs:element name="name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="19"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="surname">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="29"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="stuID">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="\d{4}510\d{3}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="gender" type="genderType"/>
+      <xs:element name="email" type="emailType" minOccurs="0"/>
+      <xs:element name="phone" type="phoneType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="gradeInfoType">
+    <xs:sequence>
+      <xs:element name="midterm" type="gradeType"/>
+      <xs:element name="project" type="gradeType"/>
+      <xs:element name="final" type="gradeType"/>
+    </xs:sequence>
+    <xs:attribute name="letter_grade">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AA"/>
+          <xs:enumeration value="BA"/>
+          <xs:enumeration value="BB"/>
+          <xs:enumeration value="CB"/>
+          <xs:enumeration value="CC"/>
+          <xs:enumeration value="DC"/>
+          <xs:enumeration value="DD"/>
+          <xs:enumeration value="FF"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Define simple types -->
+  <xs:simpleType name="genderType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="M"/>
+      <xs:enumeration value="F"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="emailType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|yahoo\.com|ogr\.deu\.edu\.tr)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="phoneType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\(\+90\)\d{3}-\d{3}-\d{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="gradeType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Define root element -->
+  <xs:element name="records">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="row" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="student_info" type="studentInfoType"/>
+              <xs:element name="grade_info" type="gradeInfoType"/>
+              <xs:element name="regularStudent" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="👍|👎|\s"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="course_surveyRating" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:integer">
+                      <xs:attribute name="hexVal_bigEnd" type="xs:string"/>
+                      <xs:attribute name="hexVal_littleEnd" type="xs:string"/>
+                      <xs:attribute name="decimal" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:integer"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
